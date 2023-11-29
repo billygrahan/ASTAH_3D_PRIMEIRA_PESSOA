@@ -4,7 +4,7 @@
 
 </div>
 
-![Astah](https://i.imgur.com/RX5kDms.jpg)
+![Astah](https://imgur.com/ARTHzLs.jpg)
 
 <div align="justify">
 
