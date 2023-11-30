@@ -1,15 +1,11 @@
-#include "../include/lua.hpp"
-#include <SOIL/SOIL.h>
-#include <GL/glut.h>
-#include <cmath>
-#include <string>
+#include "../include/espaco.hpp"
 
-void Lua::desenha(){
-    GLfloat pilhas = 20;
-    GLfloat fatias = 20;
+void Espaco::desenha(){
+    GLfloat pilhas = 40;
+    GLfloat fatias = 40;
 
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D,0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
 
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_TRIANGLE_STRIP);
@@ -44,8 +40,21 @@ void Lua::desenha(){
     glEnd();
 
     glDisable(GL_TEXTURE_2D);
+    //esfera.~Textura();
 }
 
-Lua::Lua(GLfloat raio){
-    this->raio = raio;
+Espaco::Espaco(GLfloat novo_raio, const char* caminho){
+    raio = novo_raio;
+    // Carregar a textura
+    this->textureID = SOIL_load_OGL_texture(
+    "../texturas/ceu.png",  // Substitua com o caminho para sua textura
+    SOIL_LOAD_AUTO,
+    SOIL_CREATE_NEW_ID,
+    SOIL_FLAG_INVERT_Y
+    );
+
+    if (this->textureID == 0) {
+    const char* error = SOIL_last_result();
+    printf("Erro ao carregar textura: %s\n", error);
+    }
 }

@@ -1,5 +1,4 @@
 #include "../include/chao.hpp"
-#include "../include/textura.hpp"
 
 
 

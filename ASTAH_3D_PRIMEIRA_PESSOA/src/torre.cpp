@@ -1,11 +1,10 @@
 #include "../include/torre.hpp"
-#include "../include/textura.hpp" 
 #include <GL/glut.h>
 #include <cmath>
 #include <string>
 
 void predio_principal(double largura, double altura);
-void bandeiras(double largura, double altura, const string& caminho);
+//void bandeiras(double largura, double altura, const string& caminho);
 
 void Torre::desenha(){
     //desenha predio principal
@@ -32,7 +31,7 @@ void Torre::desenha(){
     // desenha as bandeiras
     glPushMatrix();
         glTranslated(largura, altura, largura);
-        bandeiras(largura, altura, "../texturas/astah.png");
+        //bandeiras(largura, altura, "../texturas/astah.png");
     glPopMatrix();
 
 }
@@ -134,7 +133,7 @@ void predio_principal(double largura, double altura){
 
 
 
-void bandeiras(double Largura, double altura, const string& caminho){
+/*void bandeiras(double Largura, double altura, const string& caminho){
     glBegin(GL_LINES);
         glVertex3f(0.0,0.0,0.0);
         glVertex3f(0.0,Largura,0.0);
@@ -173,7 +172,7 @@ void bandeiras(double Largura, double altura, const string& caminho){
     glPopMatrix();
 
     bandeira.~Textura();
-}
+}*/
 
 Torre::Torre(double largura, double altura){
     this->largura = largura;

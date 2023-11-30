@@ -4,6 +4,7 @@
 #include <GL/glut.h>
 #include <cmath>
 #include <SOIL/SOIL.h>
+#include <string>
 
 class Lua{
     private:

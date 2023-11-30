@@ -1,7 +1,7 @@
-#include "../include/textura.hpp"
 #include "../include/torre.hpp"
 #include "../include/chao.hpp"
 #include "../include/lua.hpp"
+#include "../include/espaco.hpp"
 #include <GL/glut.h>
 #include <cmath>
 #include <glm/glm.hpp>
@@ -22,6 +22,7 @@ void updateCameraPosition();
 Chao chao(10, 0.1);
 Torre torre(0.5, 3);
 Lua lua(1.0f);
+Espaco espaco(15.0f,"../texturas/ceu.png");
 
 /*void initLighting() {
     glEnable(GL_LIGHTING);
@@ -95,7 +96,15 @@ void desenha() {
         glTranslated(5.0,torre.get_altura()+3,5.0);
         //glColor3f(0.0, 1.0, 1.0);
         glRotatef(180,1,0,0);
-        lua.desenha();
+        //lua.desenha();
+        //glutSolidSphere(1.0, 50, 50);
+    glPopMatrix();
+
+    glPushMatrix();
+        //glTranslated(5.0,torre.get_altura()+3,5.0);
+        //glColor3f(0.0, 1.0, 1.0);
+        glRotatef(180,1,0,0);
+        espaco.desenha();
         //glutSolidSphere(1.0, 50, 50);
     glPopMatrix();
 
