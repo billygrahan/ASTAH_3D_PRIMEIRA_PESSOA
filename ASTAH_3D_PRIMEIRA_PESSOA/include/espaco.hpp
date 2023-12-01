@@ -5,14 +5,15 @@
 #include <cmath>
 #include <SOIL/SOIL.h>
 #include <cstdio>
+#include "../include/textura.hpp"
 
 
 class Espaco{
     private:
         GLfloat raio;
-        GLuint textureID;
+        Textura *textura_ceu;
     public:
-        Espaco(GLfloat novo_raio, const char* caminho);
+        Espaco(GLfloat novo_raio);
         void desenha();
 };
 #endif

@@ -5,7 +5,7 @@ void Espaco::desenha(){
     GLfloat fatias = 40;
 
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, textureID);
+    glBindTexture(GL_TEXTURE_2D, textura_ceu->get_textureID());
 
     glColor3f(1.0, 1.0, 1.0);
     glBegin(GL_TRIANGLE_STRIP);
@@ -43,18 +43,20 @@ void Espaco::desenha(){
     //esfera.~Textura();
 }
 
-Espaco::Espaco(GLfloat novo_raio, const char* caminho){
+Espaco::Espaco(GLfloat novo_raio){
     raio = novo_raio;
+    char* caminho = "ceu.png";
+    textura_ceu = new Textura(caminho);
     // Carregar a textura
-    this->textureID = SOIL_load_OGL_texture(
-    "../texturas/ceu.png",  // Substitua com o caminho para sua textura
-    SOIL_LOAD_AUTO,
-    SOIL_CREATE_NEW_ID,
-    SOIL_FLAG_INVERT_Y
-    );
+    // this->textureID = SOIL_load_OGL_texture(
+    // "../texturas/ceu.png",  // Substitua com o caminho para sua textura
+    // SOIL_LOAD_AUTO,
+    // SOIL_CREATE_NEW_ID,
+    // SOIL_FLAG_INVERT_Y
+    // );
 
-    if (this->textureID == 0) {
-    const char* error = SOIL_last_result();
-    printf("Erro ao carregar textura: %s\n", error);
-    }
+    // if (this->textureID == 0) {
+    // const char* error = SOIL_last_result();
+    // printf("Erro ao carregar textura: %s\n", error);
+    // }
 }

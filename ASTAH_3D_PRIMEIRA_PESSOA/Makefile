@@ -15,6 +15,7 @@ libeb: \
     $(OBJ)/chao.o \
 	$(OBJ)/torre.o \
 	$(OBJ)/lua.o \
+	$(OBJ)/textura.o \
 	$(OBJ)/espaco.o
 
 myapps: \
