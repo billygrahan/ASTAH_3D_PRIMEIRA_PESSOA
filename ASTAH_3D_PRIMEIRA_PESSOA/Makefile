@@ -16,7 +16,9 @@ libeb: \
 	$(OBJ)/torre.o \
 	$(OBJ)/lua.o \
 	$(OBJ)/textura.o \
-	$(OBJ)/espaco.o
+	$(OBJ)/espaco.o \
+	$(OBJ)/missil.o \
+	$(OBJ)/tiro.o
 
 myapps: \
 	cleanapp \

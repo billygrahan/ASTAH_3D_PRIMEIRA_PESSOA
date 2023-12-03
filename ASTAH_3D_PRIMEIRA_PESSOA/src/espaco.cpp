@@ -45,8 +45,7 @@ void Espaco::desenha(){
 
 Espaco::Espaco(GLfloat novo_raio){
     raio = novo_raio;
-    char* caminho = "ceu.png";
-    textura_ceu = new Textura(caminho);
+    textura_ceu = new Textura("ceu3.png");
     // Carregar a textura
     // this->textureID = SOIL_load_OGL_texture(
     // "../texturas/ceu.png",  // Substitua com o caminho para sua textura

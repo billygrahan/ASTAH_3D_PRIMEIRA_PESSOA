@@ -44,6 +44,6 @@ void Lua::desenha(){
 
 Lua::Lua(GLfloat raio){
     this->raio = raio;
-    char* caminho = "mundo.png"
+    const char* caminho = "lua.jpg";
     textura_lua = new Textura(caminho);
 }
