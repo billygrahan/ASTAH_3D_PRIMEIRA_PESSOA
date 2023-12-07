@@ -1,33 +1,9 @@
 #include "../include/predios.hpp"
 
 void Predios::desenha(){
-
-    // desenha predios auxiliares
     glPushMatrix();
-        glTranslated(pos,0.0,pos);
         predio_principal();
     glPopMatrix();
-    glPushMatrix();
-        glTranslated(-pos,0.0,pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(0.0,0.0,pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(0.0,0.0,-pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(pos,0.0,-pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(-pos,0.0,-pos);
-        predio_principal();
-    glPopMatrix();
-
 }
 
 void Predios::predio_principal(){
@@ -98,15 +74,11 @@ void Predios::predio_principal(){
     glEnd();
 
     glDisable(GL_TEXTURE_2D);
-
-    // glDisable(GL_LIGHTING);
-    // glDisable(GL_LIGHT0);
 }
 
-Predios::Predios(GLfloat largura, GLfloat altura, GLfloat pos){
+Predios::Predios(GLfloat largura, GLfloat altura){
     this->largura = largura;
     this->altura = altura;
-    this->pos = pos;
     this->colisao = false;
     textura_predios = new Textura("predio1.png");
     textura_predios_topo = new Textura("prediotopo1.png");

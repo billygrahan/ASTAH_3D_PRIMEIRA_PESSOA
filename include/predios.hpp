@@ -7,7 +7,6 @@
 
 class Predios{
     private:
-        GLfloat pos;
         GLfloat altura;
         GLfloat largura;
         Textura *textura_predios;
@@ -16,7 +15,7 @@ class Predios{
     protected:
         void predio_principal();
     public:
-        Predios(GLfloat largura, GLfloat altura, GLfloat pos);
+        Predios(GLfloat largura, GLfloat altura);
         void desenha();
         GLfloat get_altura();
         ~Predios();

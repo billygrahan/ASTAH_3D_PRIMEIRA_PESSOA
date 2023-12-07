@@ -37,12 +37,15 @@ GLfloat cameraTheta = M_PI / 2.0f;
 GLfloat cameraPhi = 0.0f;
 
 void desenha();
-void reshape(int width, int heighddaddaaaddaddt);
+void reshape(int width, int height);
 void keyboard(unsigned char key, int x, int y);
 void updateCameraPosition();
 void carrega_objetos();
 void updateMissilPosition();
 void timerFunc(int value);
+void mouseMotion(int x, int y);
+void mouseButton(int button, int state, int x, int y);
+GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx);
 
 
 Chao *chao = nullptr;
@@ -50,7 +53,7 @@ Torre *torre = nullptr;
 Lua *lua = nullptr;
 Espaco *espaco = nullptr;
 Missil *missil = nullptr;
-Predios *predios = nullptr;
+Predios *predios[6];
 
 
 
@@ -118,6 +121,34 @@ void mouseButton(int button, int state, int x, int y) {
     lastY = y;
 }
 
+void desenha_predios(){
+    //desenha predios auxiliares
+    glPushMatrix();
+        glTranslated((chao->get_raio())/3,0.0,(chao->get_raio())/3);
+        predios[0]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(-(chao->get_raio())/3,0.0,(chao->get_raio())/3);
+        predios[1]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(0.0,0.0,(chao->get_raio())/3);
+        predios[2]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(0.0,0.0,-(chao->get_raio())/3);
+        predios[3]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated((chao->get_raio())/3,0.0,-(chao->get_raio())/3);
+        predios[4]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(-(chao->get_raio())/3,0.0,-(chao->get_raio())/3);
+        predios[5]->desenha();
+    glPopMatrix();
+}
+
 void desenha() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -144,10 +175,7 @@ void desenha() {
         torre->desenha();
     glPopMatrix();
 
-    glPushMatrix();
-        //glTranslated(0.0,-1.0,0.0);
-        predios->desenha();
-    glPopMatrix();
+    desenha_predios();
 
     // desenha esfera
     glPushMatrix();
@@ -174,8 +202,8 @@ void updateCameraPosition() {
     x_cam = cameraRadius * sin(cameraTheta) * cos(cameraPhi);
     y_cam = cameraRadius * cos(cameraTheta);
     z_cam = cameraRadius * sin(cameraTheta) * sin(cameraPhi);
-    //gluLookAt(x_cam, y_cam, z_cam, 0, torre->get_altura()*2, 0, 0, 1, 0);
-    gluLookAt(0, (torre->get_altura()*2) + 0.7, 0, x_cam, y_cam, z_cam, 0, 1, 0);
+    gluLookAt(x_cam, y_cam, z_cam, 0, torre->get_altura()*2, 0, 0, 1, 0);
+    //gluLookAt(0, (torre->get_altura()*2) + 0.7, 0, x_cam, y_cam, z_cam, 0, 1, 0);
 }
 
 GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx) {
@@ -235,12 +263,6 @@ void keyboard(unsigned char key, int x, int y){
         case 27: // 27 é o código ASCII para a tecla "Esc"
             exit(0); // Encerra o programa
             break;
-        // case 'l':
-            // if(cont_tiros < 4){
-            //     tiro[cont_tiros]->set_disparo(true);
-            //     cont_tiros += 1;
-            // }
-            // break;
     }
     // Limitar os ângulos de câmera para evitar inversões
     if (cameraTheta < 0.1f) cameraTheta = 0.1f;
@@ -250,9 +272,6 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void timerFunc(int value) {
-    // for(int i = 0;i<4;i++){
-    //     tiro[i]->updateTiroPosition(&x_cam,&y_cam,&z_cam,cont_tiros_aux);
-    // }
     updateMissilPosition();
     glutPostRedisplay();
     glutTimerFunc(1000 / 30, timerFunc, 0);
@@ -264,8 +283,7 @@ void carrega_objetos(){
     lua = new Lua(7.0f);
     espaco = new Espaco(50.0f);
     missil = new Missil(0.3f,2.0f);
-    predios = new Predios(1.3, 3.5, (chao->get_raio())/3);
-    // for(int i = 0;i<4;i++){
-    //     tiro.push_back(new Tiro(0.05f));
-    // }
+    for(int i = 0; i < 6 ;i++){
+        predios[i] = new Predios(1.3, 3.5);
+    }
 }
