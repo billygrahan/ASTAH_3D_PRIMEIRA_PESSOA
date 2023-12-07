@@ -104,6 +104,10 @@ Missil::Missil(GLfloat raio, GLfloat altura){
     const char* caminho = "fogo2.jpeg";
     textura_meio = new Textura(caminho);
     textura_esfera = new Textura("meteoro.png");
+    glBindTexture(GL_TEXTURE_2D, textura_meio->get_textureID());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, 0);  // Desvincular textura para evitar alterações acidentais
 }
 
 // In missil.cpp file

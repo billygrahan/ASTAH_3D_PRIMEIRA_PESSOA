@@ -10,6 +10,7 @@ class Chao{
         GLfloat raio;
         GLfloat especura;
         Textura *textura_chao;
+        Textura *textura_pista;
     protected:
         void grama();
         void pista();
