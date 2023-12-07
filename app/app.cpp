@@ -287,6 +287,10 @@ void keyboard(unsigned char key, int x, int y){
         case 'o':
             iluminacao->mover_baixo();
             break;
+        case 'f':
+        case 'F':
+            glutFullScreenToggle();
+            break;
     }
     // Limitar os ângulos de câmera para evitar inversões
     if (cameraTheta < 0.1f) cameraTheta = 0.1f;

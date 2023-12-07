@@ -53,9 +53,9 @@ class Iluminacao{
 
             this->corteSpot[0] = 180.0f;
 
-            this->constanteAttenuation[0] = 0.2f;
+            this->constanteAttenuation[0] = 0.5f;
 
-            this->linearAttenuation[0] = 0.0f;
+            this->linearAttenuation[0] = 0.5f;
 
             this->quadraticAttenuation[0] = 0.0f;
         }

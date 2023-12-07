@@ -34,26 +34,32 @@ void Iluminacao::set_brilho(GLfloat brilho){
 
 void Iluminacao::mover_frente(){
     posicao[2] += 0.1;
+    std::cout << "posicao[2] = " << posicao[2] << std::endl;
 }
 
 void Iluminacao::mover_tras(){
     posicao[2] -= 0.1;
+    std::cout << "posicao[2] = " << posicao[2] << std::endl;
 }
 
 void Iluminacao::mover_direita(){
     posicao[0] -= 0.1;
+    std::cout << "posicao[0] = " << posicao[0] << std::endl;
 }
 
 void Iluminacao::mover_esquerda(){
     posicao[0] += 0.1;
+    std::cout << "posicao[0] = " << posicao[0] << std::endl;
 }
 
 void Iluminacao::mover_cima(){
-    posicao[1] += 0.1;
+    posicao[1] -= 0.1;
+    std::cout << "posicao[1] = " << posicao[1] << std::endl;
 }
 
 void Iluminacao::mover_baixo(){
-    posicao[1] -= 0.1;
+    posicao[1] += 0.1;
+    std::cout << "posicao[1] = " << posicao[1] << std::endl;
 }
 
 void Iluminacao::ativa(){
