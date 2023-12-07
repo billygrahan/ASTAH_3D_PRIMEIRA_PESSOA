@@ -46,6 +46,8 @@ void timerFunc(int value);
 void mouseMotion(int x, int y);
 void mouseButton(int button, int state, int x, int y);
 GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx);
+void desenha_predios();
+void colisao_predios();
 
 
 Chao *chao = nullptr;
@@ -119,6 +121,35 @@ void mouseButton(int button, int state, int x, int y) {
     // Atualiza a posição do cursor anterior
     lastX = x;
     lastY = y;
+}
+
+void colisao_predios(){
+    GLfloat dist = ((chao->get_raio())/3);
+
+    if(dist+predios[0]->get_largura() >= x_missil    &&    dist-predios[0]->get_largura() <= x_missil   &&    predios[0]->get_altura() >= y_missil    &&   dist+predios[0]->get_largura() >= z_missil    &&    dist-predios[0]->get_largura() <= z_missil)
+    {
+        predios[0]->set_colisao(true);
+    }
+    if(-dist+predios[0]->get_largura() >= x_missil    &&    -dist-predios[0]->get_largura() <= x_missil   &&    predios[0]->get_altura() >= y_missil    &&   dist+predios[0]->get_largura() >= z_missil    &&    dist-predios[0]->get_largura() <= z_missil)
+    {
+        predios[1]->set_colisao(true);
+    }
+    if(0+predios[0]->get_largura() >= x_missil    &&    0-predios[0]->get_largura() <= x_missil   &&    predios[0]->get_altura() >= y_missil    &&   dist+predios[0]->get_largura() >= z_missil    &&    dist-predios[0]->get_largura() <= z_missil)
+    {
+        predios[2]->set_colisao(true);
+    }
+    if(0+predios[0]->get_largura() >= x_missil    &&    0-predios[0]->get_largura() <= x_missil   &&    predios[0]->get_altura() >= y_missil    &&   -dist+predios[0]->get_largura() >= z_missil    &&    -dist-predios[0]->get_largura() <= z_missil)
+    {
+        predios[3]->set_colisao(true);
+    }
+    if(dist+predios[0]->get_largura() >= x_missil    &&    dist-predios[0]->get_largura() <= x_missil   &&    predios[0]->get_altura() >= y_missil    &&   -dist+predios[0]->get_largura() >= z_missil    &&    -dist-predios[0]->get_largura() <= z_missil)
+    {
+        predios[4]->set_colisao(true);
+    }
+    if(-dist+predios[0]->get_largura() >= x_missil    &&    -dist-predios[0]->get_largura() <= x_missil   &&    predios[0]->get_altura() >= y_missil    &&   -dist+predios[0]->get_largura() >= z_missil    &&    -dist-predios[0]->get_largura() <= z_missil)
+    {
+        predios[5]->set_colisao(true);
+    }
 }
 
 void desenha_predios(){
@@ -220,12 +251,12 @@ GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx) {
 
 void updateMissilPosition(){
     if(y_missil <= 0.0){
-        y_missil = 20;
+        y_missil = 15;
         x_missil = gerarNumeroAleatoriofloat(-10,10);
         z_missil = gerarNumeroAleatoriofloat(-10,10);
     }
     else{
-        y_missil -= 0.05f;
+        y_missil -= 0.5f;
     }
 }
 
@@ -272,6 +303,7 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void timerFunc(int value) {
+    colisao_predios();
     updateMissilPosition();
     glutPostRedisplay();
     glutTimerFunc(1000 / 30, timerFunc, 0);

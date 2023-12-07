@@ -11,13 +11,15 @@ class Predios{
         GLfloat largura;
         Textura *textura_predios;
         Textura *textura_predios_topo;
-        int colisao;
+        bool colisao;
     protected:
         void predio_principal();
     public:
         Predios(GLfloat largura, GLfloat altura);
         void desenha();
         GLfloat get_altura();
+        GLfloat get_largura();
+        void set_colisao(bool colisao);
         ~Predios();
 };
 

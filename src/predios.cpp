@@ -1,6 +1,8 @@
 #include "../include/predios.hpp"
 
 void Predios::desenha(){
+    if(colisao == true) glColor3f(1,0,0);
+    else glColor3f(1,1,1);
     glPushMatrix();
         predio_principal();
     glPopMatrix();
@@ -94,6 +96,13 @@ GLfloat Predios::get_altura(){
     return altura;
 }
 
+GLfloat Predios::get_largura(){
+    return largura;
+}
+
+void Predios::set_colisao(bool colisao){
+    this->colisao = colisao;
+}
 // In Predios.cpp file
 
 Predios::~Predios() {
