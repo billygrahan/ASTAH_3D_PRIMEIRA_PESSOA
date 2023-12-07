@@ -26,11 +26,6 @@ GLfloat x_cam = 0;
 GLfloat y_cam = 0;
 GLfloat z_cam = 0;
 
-// Variaveis para posição do missel
-GLfloat x_missil = 0;
-GLfloat y_missil = 0;
-GLfloat z_missil = 0;
-
 // Variáveis para a posição da câmera
 GLfloat cameraRadius = 45.0f;
 GLfloat cameraTheta = M_PI / 2.0f;
@@ -41,11 +36,9 @@ void reshape(int width, int height);
 void keyboard(unsigned char key, int x, int y);
 void updateCameraPosition();
 void carrega_objetos();
-void updateMissilPosition();
 void timerFunc(int value);
 void mouseMotion(int x, int y);
 void mouseButton(int button, int state, int x, int y);
-GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx);
 void desenha_predios();
 void colisao_predios();
 
@@ -54,7 +47,7 @@ Chao *chao = nullptr;
 Torre *torre = nullptr;
 Lua *lua = nullptr;
 Espaco *espaco = nullptr;
-Missil *missil = nullptr;
+Missil *missil[3];
 Predios *predios[6];
 
 
@@ -123,7 +116,7 @@ void mouseButton(int button, int state, int x, int y) {
     lastY = y;
 }
 
-void colisao_predios(){
+void colisao_predios(GLfloat x_missil, GLfloat y_missil, GLfloat z_missil){
     GLfloat dist = ((chao->get_raio())/3);
 
     if(dist+predios[0]->get_largura() >= x_missil    &&    dist-predios[0]->get_largura() <= x_missil   &&    predios[0]->get_altura() >= y_missil    &&   dist+predios[0]->get_largura() >= z_missil    &&    dist-predios[0]->get_largura() <= z_missil)
@@ -180,6 +173,15 @@ void desenha_predios(){
     glPopMatrix();
 }
 
+void desenha_misseis(){
+    for(int i = 0; i < 3 ;i++){
+        glPushMatrix();
+            glTranslatef(missil[i]->get_x(), missil[i]->get_y(), missil[i]->get_z());
+            missil[i]->desenha();
+        glPopMatrix();
+    }
+}
+
 void desenha() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -217,14 +219,7 @@ void desenha() {
         //glutSolidSphere(1.0, 50, 50);
     glPopMatrix();
 
-    glPushMatrix();
-        glTranslated(x_missil,y_missil,z_missil);
-        missil->desenha();
-    glPopMatrix();
-
-    glPushMatrix();
-        
-    glPopMatrix();
+    desenha_misseis();
 
     glutSwapBuffers();
 }
@@ -235,29 +230,6 @@ void updateCameraPosition() {
     z_cam = cameraRadius * sin(cameraTheta) * sin(cameraPhi);
     gluLookAt(x_cam, y_cam, z_cam, 0, torre->get_altura()*2, 0, 0, 1, 0);
     //gluLookAt(0, (torre->get_altura()*2) + 0.7, 0, x_cam, y_cam, z_cam, 0, 1, 0);
-}
-
-GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx) {
-    // Objeto do motor de números aleatórios
-    static random_device rd;
-    static default_random_engine gerador(rd());
-
-    // Distribuição uniforme de GLfloats entre 0 e 15
-    static uniform_real_distribution<GLfloat> distribuicao(minn, maxx);
-
-    // Gerando e retornando um número aleatório float
-    return distribuicao(gerador);
-}
-
-void updateMissilPosition(){
-    if(y_missil <= 0.0){
-        y_missil = 15;
-        x_missil = gerarNumeroAleatoriofloat(-10,10);
-        z_missil = gerarNumeroAleatoriofloat(-10,10);
-    }
-    else{
-        y_missil -= 0.5f;
-    }
 }
 
 void reshape(int width, int height) {
@@ -303,8 +275,10 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void timerFunc(int value) {
-    colisao_predios();
-    updateMissilPosition();
+    for(int i = 0; i < 3 ;i++){
+        colisao_predios(missil[i]->get_x(), missil[i]->get_y(), missil[i]->get_z());
+        missil[i]->updateMissilPosition();
+    }
     glutPostRedisplay();
     glutTimerFunc(1000 / 30, timerFunc, 0);
 }
@@ -314,7 +288,9 @@ void carrega_objetos(){
     torre = new Torre(0.45, 3);
     lua = new Lua(7.0f);
     espaco = new Espaco(50.0f);
-    missil = new Missil(0.3f,2.0f);
+    for(int i = 0; i < 3 ;i++){
+        missil[i] = new Missil(0.3f,2.0f,0.1f);
+    }
     for(int i = 0; i < 6 ;i++){
         predios[i] = new Predios(1.3, 3.5);
     }

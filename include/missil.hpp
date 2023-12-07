@@ -5,9 +5,15 @@
 #include <cmath>
 #include <SOIL/SOIL.h>
 #include "../include/textura.hpp"
+#include <random>
 
 class Missil {
     private:
+        GLfloat velocidade;
+        GLfloat altura_spall;
+        GLfloat x_missil;
+        GLfloat y_missil;
+        GLfloat z_missil;
         GLfloat raio;
         GLfloat altura;
         Textura *textura_meio;
@@ -15,10 +21,14 @@ class Missil {
     protected:
         void esfera();
         void cilindro();
+        GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx);
     public:
-        Missil(GLfloat raio, GLfloat altura);
+        Missil(GLfloat raio, GLfloat altura, GLfloat velocidade);
+        void updateMissilPosition();
         void desenha();
-        void get_raio();
+        GLfloat get_x();
+        GLfloat get_y();
+        GLfloat get_z();
         ~Missil();
 };
 

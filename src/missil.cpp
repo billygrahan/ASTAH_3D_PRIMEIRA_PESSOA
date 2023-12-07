@@ -55,6 +55,7 @@ void Missil::esfera(){
 }
 
 void Missil::cilindro(){
+    glColor3f(1,1,1);
     GLfloat segments = 20.0f;
     // Ativar mapeamento de textura
     glEnable(GL_TEXTURE_2D);
@@ -98,7 +99,36 @@ void Missil::cilindro(){
     glDisable(GL_TEXTURE_2D);
 }
 
-Missil::Missil(GLfloat raio, GLfloat altura){
+GLfloat Missil::gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx) {
+    // Objeto do motor de números aleatórios
+    static random_device rd;
+    static default_random_engine gerador(rd());
+
+    // Distribuição uniforme de GLfloats entre 0 e 15
+    static uniform_real_distribution<GLfloat> distribuicao(minn, maxx);
+
+    // Gerando e retornando um número aleatório float
+    return distribuicao(gerador);
+}
+
+void Missil::updateMissilPosition(){
+    GLfloat raio_dist = 11.0f;
+    if(y_missil <= 0.0){
+        y_missil = altura_spall;
+        x_missil = gerarNumeroAleatoriofloat(-raio_dist,raio_dist);
+        z_missil = gerarNumeroAleatoriofloat(-raio_dist,raio_dist);
+    }
+    else{
+        y_missil -= velocidade;
+    }
+}
+
+Missil::Missil(GLfloat raio, GLfloat altura, GLfloat velocidade){
+    this->velocidade = velocidade;
+    altura_spall = 15;
+    x_missil = 0;
+    y_missil = 0;
+    z_missil = 0;
     this->raio = raio;
     this->altura = altura;
     const char* caminho = "fogo2.jpeg";
@@ -109,6 +139,19 @@ Missil::Missil(GLfloat raio, GLfloat altura){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glBindTexture(GL_TEXTURE_2D, 0);  // Desvincular textura para evitar alterações acidentais
 }
+
+GLfloat Missil::get_x(){
+    return x_missil;
+}
+
+GLfloat Missil::get_y(){
+    return y_missil;
+}
+
+GLfloat Missil::get_z(){
+    return z_missil;
+}
+
 
 // In missil.cpp file
 
