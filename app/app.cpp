@@ -4,6 +4,7 @@
 #include "../include/espaco.hpp"
 #include "../include/missil.hpp"
 #include "../include/predios.hpp"
+#include "../include/iluminacao.hpp"
 #include <GL/glut.h>
 #include <GL/freeglut.h>
 #include <cmath>
@@ -49,6 +50,7 @@ Lua *lua = nullptr;
 Espaco *espaco = nullptr;
 Missil *missil[3];
 Predios *predios[6];
+Iluminacao *iluminacao = nullptr;
 
 
 
@@ -56,7 +58,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1920, 1080);
-    glutCreateWindow("so vamo");
+    glutCreateWindow("ASTAH 3D");
 
     carrega_objetos();
 
@@ -205,10 +207,14 @@ void desenha() {
 
     glPushMatrix();
         //glTranslated(0.0,-1.0,0.0);
+        iluminacao->ativa();
         torre->desenha();
+        iluminacao->desativa();
     glPopMatrix();
 
+    //iluminacao->ativa();
     desenha_predios();
+    //iluminacao->desativa();
 
     // desenha esfera
     glPushMatrix();
@@ -266,6 +272,28 @@ void keyboard(unsigned char key, int x, int y){
         case 27: // 27 é o código ASCII para a tecla "Esc"
             exit(0); // Encerra o programa
             break;
+        case 'i':
+            iluminacao->mover_frente();
+            break;
+        case 'k':
+            iluminacao->mover_tras();
+            break;
+        case 'j':
+            iluminacao->mover_esquerda();
+            break;
+        case 'l':
+            iluminacao->mover_direita();
+            break;
+        case 'u':
+            iluminacao->mover_cima();
+            break;
+        case 'o':
+            iluminacao->mover_baixo();
+            break;
+        case 'f':
+        case 'F':
+            glutFullScreenToggle();
+            break;
     }
     // Limitar os ângulos de câmera para evitar inversões
     if (cameraTheta < 0.1f) cameraTheta = 0.1f;
@@ -289,9 +317,10 @@ void carrega_objetos(){
     lua = new Lua(7.0f);
     espaco = new Espaco(50.0f);
     for(int i = 0; i < 3 ;i++){
-        missil[i] = new Missil(0.3f,2.0f,0.1f);
+        missil[i] = new Missil(0.3f,2.0f,0.5f);
     }
     for(int i = 0; i < 6 ;i++){
         predios[i] = new Predios(1.3, 3.5);
     }
+    iluminacao = new Iluminacao();
 }

@@ -19,6 +19,7 @@ class Chao{
         Chao(GLfloat largura, GLfloat especura);
         void desenha();
         GLfloat get_raio();
+        
         ~Chao();
 };
 

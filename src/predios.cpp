@@ -16,6 +16,7 @@ void Predios::predio_principal(){
     glBegin(GL_QUADS);
         
         // lado z+ 
+        calcula_normal(largura, 0.0, largura, -largura, 0.0, largura, -largura, altura, largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, largura);
         glTexCoord2f(1.0, 0.0);
@@ -26,6 +27,7 @@ void Predios::predio_principal(){
         glVertex3f(largura, altura, largura);
 
         // lado x+ 
+        calcula_normal(largura, 0.0, largura, largura, 0.0, -largura, largura, altura, -largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, largura);
         glTexCoord2f(1.0, 0.0);
@@ -36,6 +38,7 @@ void Predios::predio_principal(){
         glVertex3f(largura, altura, largura);
 
         // lado z- 
+        calcula_normal(largura, 0.0, -largura, -largura, 0.0, -largura, -largura, altura, -largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, -largura);
         glTexCoord2f(1.0, 0.0);
@@ -46,6 +49,7 @@ void Predios::predio_principal(){
         glVertex3f(largura, altura, -largura);
 
         // lado x- 
+        calcula_normal(-largura, 0.0, largura, -largura, 0.0, -largura, -largura, altura, -largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(-largura, 0.0, -largura);
         glTexCoord2f(1.0, 0.0);
@@ -65,6 +69,7 @@ void Predios::predio_principal(){
 
     glBegin(GL_QUADS);
         //tampa
+        calcula_normal(largura, altura, largura, -largura, altura, largura, -largura, altura, -largura);
         glTexCoord2f(0.0*4.0, 0.0*4.0);
         glVertex3f(largura, altura, largura);
         glTexCoord2f(1.0*4.0, 0.0*4.0);
@@ -103,6 +108,25 @@ GLfloat Predios::get_largura(){
 void Predios::set_colisao(bool colisao){
     this->colisao = colisao;
 }
+void Predios::calcula_normal(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+    float nx, ny, nz;
+
+    // Calculate the normal vector
+    nx = (y2-y1)*(z3-z1) - (z2-z1)*(y3-y1);
+    ny = (z2-z1)*(x3-x1) - (x2-x1)*(z3-z1);
+    nz = (x2-x1)*(y3-y1) - (y2-y1)*(x3-x1);
+
+    // Calculate the length of the normal vector
+    float length = sqrt(nx * nx + ny * ny + nz * nz);
+
+    // Normalize the normal vector
+    nx /= length;
+    ny /= length;
+    nz /= length;
+
+    glNormal3f(nx, ny, nz);
+}
+
 // In Predios.cpp file
 
 Predios::~Predios() {
