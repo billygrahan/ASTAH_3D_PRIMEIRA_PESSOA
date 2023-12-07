@@ -1,6 +1,7 @@
 #include "../include/predios.hpp"
 
 void Predios::desenha(){
+<<<<<<< HEAD
 
     // desenha predios auxiliares
     // glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_LIGHTING_BIT | GL_TEXTURE_BIT);
@@ -28,10 +29,12 @@ void Predios::desenha(){
     //     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
     //     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, spot_exponent);
     //     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, spot_cutoff);
+=======
+>>>>>>> origin/billy
     glPushMatrix();
-        glTranslated(pos,0.0,pos);
         predio_principal();
     glPopMatrix();
+<<<<<<< HEAD
     glPushMatrix();
         glTranslated(-pos,0.0,pos);
         predio_principal();
@@ -53,23 +56,11 @@ void Predios::desenha(){
         predio_principal();
     glPopMatrix();
     // glPopAttrib();
+=======
+>>>>>>> origin/billy
 }
 
 void Predios::predio_principal(){
-    // glEnable(GL_LIGHTING);
-    // glEnable(GL_LIGHT0);
-
-    // // Configuração da luz
-    // glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-    // glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
-    // glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
-    // glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
-
-    // // Configuração do material
-    // glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbiente);
-    // glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDifuso);
-    // glMaterialfv(GL_FRONT, GL_SPECULAR, materialEspecular);
-    // glMaterialf(GL_FRONT, GL_SHININESS, brilhoMaterial);
 
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, textura_predios->get_textureID());
@@ -126,28 +117,31 @@ void Predios::predio_principal(){
 
     glBegin(GL_QUADS);
         //tampa
-        glTexCoord2f(0.0, 0.0);
+        glTexCoord2f(0.0*4.0, 0.0*4.0);
         glVertex3f(largura, altura, largura);
-        glTexCoord2f(1.0, 0.0);
+        glTexCoord2f(1.0*4.0, 0.0*4.0);
         glVertex3f(-largura, altura, largura);
-        glTexCoord2f(1.0, 1.0);
+        glTexCoord2f(1.0*4.0, 1.0*4.0);
         glVertex3f(-largura, altura, -largura);
-        glTexCoord2f(0.0, 1.0);
+        glTexCoord2f(0.0*4.0, 1.0*4.0);
         glVertex3f(largura, altura, -largura);
     glEnd();
 
     glDisable(GL_TEXTURE_2D);
-
-    // glDisable(GL_LIGHTING);
-    // glDisable(GL_LIGHT0);
 }
 
-Predios::Predios(GLfloat largura, GLfloat altura, GLfloat pos){
+Predios::Predios(GLfloat largura, GLfloat altura){
     this->largura = largura;
     this->altura = altura;
-    this->pos = pos;
+    this->colisao = false;
     textura_predios = new Textura("predio1.png");
-    textura_predios_topo = new Textura("ceu.png");
+    textura_predios_topo = new Textura("prediotopo1.png");
+
+    glBindTexture(GL_TEXTURE_2D, textura_predios_topo->get_textureID());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, 0);  // Desvincular textura para evitar alterações acidentais
+
 }
 
 GLfloat Predios::get_altura(){

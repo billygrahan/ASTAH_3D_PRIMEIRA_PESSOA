@@ -9,21 +9,18 @@ Chao::Chao(GLfloat largura, GLfloat especura) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
     glBindTexture(GL_TEXTURE_2D, 0);  // Desvincular textura para evitar alterações acidentais
+
+    textura_pista = new Textura("estrada.png");
+    glBindTexture(GL_TEXTURE_2D, textura_pista->get_textureID());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S,GL_MIRRORED_REPEAT);
+    glBindTexture(GL_TEXTURE_2D, 0); 
 }
 
 void Chao::desenha() {
     glPushMatrix();
         grama();
     glPopMatrix();
-    glPushMatrix();
-        glTranslatef(0,-0.1,(raio/2)/3);
-        pista();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslatef(0,-0.1,-(raio/2)/3);
-        pista();
-    glPopMatrix();
-
 
     for(GLfloat i = -3 ; i <= 3 ; i++){
     glPopMatrix();
@@ -33,6 +30,15 @@ void Chao::desenha() {
         arvore_1();
     glPopMatrix();
     }
+    
+    glPushMatrix();
+        glTranslatef(0,-0.1,(raio/2)/3);
+        pista();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslatef(0,-0.1,-(raio/2)/3);
+        pista();
+    glPopMatrix();
 }
 
 void Chao::arvore_1() {
@@ -76,17 +82,29 @@ void Chao::arvore_1() {
 }
 
 void Chao::pista(){
-    // Aplica a cor cinza
-    glColor3f(0.5, 0.5, 0.5);
-
+    // Aplica a cor cinz
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D,textura_pista->get_textureID());
+    glColor3f(1.0, 1.0, 1.0);
     // Parte de cima
     glBegin(GL_QUADS);
-    glVertex3f(-raio / 2, especura, -raio / (2 * 16.0 / 3.0));
-    glVertex3f(raio / 2, especura, -raio / (2 * 16.0 / 3.0));
-    glVertex3f(raio / 2, especura, raio / (2 * 16.0 / 3.0));
+    glTexCoord2f(1.0*6, 0.0);
     glVertex3f(-raio / 2, especura, raio / (2 * 16.0 / 3.0));
+
+    glTexCoord2f(1.0*6, 1.0);
+    glVertex3f(-raio / 2, especura, -raio / (2 * 16.0 / 3.0));
+
+    glTexCoord2f(0.0*6, 1.0);
+    glVertex3f(raio / 2, especura, -raio / (2 * 16.0 / 3.0));
+
+    glTexCoord2f(0.0*6, 0.0);
+    glVertex3f(raio / 2, especura, raio / (2 * 16.0 / 3.0));
+
+    glDisable(GL_TEXTURE_2D);
+
     glEnd();
 
+    glColor3f(0.5, 0.5, 0.5);
     // Parte de baixo
     glBegin(GL_QUADS);
     glVertex3f(-raio / 2, 0.0, -raio / (2 * 16.0 / 3.0));
@@ -174,6 +192,7 @@ void Chao::grama(){
 
 GLfloat Chao::get_raio(){
     return raio;
+
 }
 // In chao.cpp file
 

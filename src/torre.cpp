@@ -30,7 +30,14 @@ void Torre::desenha(){
     glPushMatrix();
         glTranslated(largura - 0.01, altura*2 - 0.25, largura - 0.01);
         //glRotatef(45,1,-1,-1);
-        bandeiras();
+        bandeiras(textura_bandeira_br->get_textureID());
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslated(-(largura - 0.01), altura*2 - 0.25, -(largura - 0.01));
+        glRotatef(180,0,1,0);
+        //glRotatef(45,1,-1,-1);
+        bandeiras(textura_bandeira_jap->get_textureID());
     glPopMatrix();
 
 }
@@ -123,7 +130,7 @@ void Torre::predio_principal(){
 
 
 
-void Torre::bandeiras(){
+void Torre::bandeiras(GLint text){
     glLineWidth(3.0f);
     glColor3f(1.0, 1.0, 1.0); 
     glBegin(GL_LINES);
@@ -146,7 +153,7 @@ void Torre::bandeiras(){
     };
         // Ativar o mapeamento de textura
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, textura_bandeira->get_textureID());
+    glBindTexture(GL_TEXTURE_2D, text);
 
     glPushMatrix();
     glTranslated(0.0,(2*largura)/3,0.0);
@@ -164,9 +171,10 @@ void Torre::bandeiras(){
 Torre::Torre(GLfloat largura, GLfloat altura){
     this->largura = largura;
     this->altura = altura;
-    textura_bandeira = new Textura("bandeira_br.png");
+    textura_bandeira_br = new Textura("bandeirabr.png");
+    textura_bandeira_jap = new Textura("bandeirajap.png");
     textura_torre = new Textura("predio.png");
-    textura_torre_topo = new Textura("ceu.png");
+    textura_torre_topo = new Textura("prediotopo.png");
 }
 
 GLfloat Torre::get_altura(){
@@ -176,7 +184,8 @@ GLfloat Torre::get_altura(){
 // In torre.cpp file
 
 Torre::~Torre() {
-    delete textura_bandeira;
+    delete textura_bandeira_br;
     delete textura_torre;
     delete textura_torre_topo;
+    delete textura_bandeira_jap;
 }

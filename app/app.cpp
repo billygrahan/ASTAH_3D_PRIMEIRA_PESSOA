@@ -6,6 +6,7 @@
 #include "../include/predios.hpp"
 #include "../include/iluminacao.hpp"
 #include <GL/glut.h>
+#include <GL/freeglut.h>
 #include <cmath>
 #include <glm/glm.hpp>
 #include <SOIL/SOIL.h>
@@ -16,8 +17,10 @@
 
 using namespace std;
 
-int cont_tiros = 0;
-int *cont_tiros_aux = &cont_tiros;
+// Variáveis para armazenar a última posição do mouse
+int lastX = -1;
+int lastY = -1;
+bool cursorLocked = false;
 
 // Variaveis para posição do missel
 GLfloat x_cam = 0;
@@ -30,7 +33,7 @@ GLfloat y_missil = 0;
 GLfloat z_missil = 0;
 
 // Variáveis para a posição da câmera
-GLfloat cameraRadius = 35.0f;
+GLfloat cameraRadius = 45.0f;
 GLfloat cameraTheta = M_PI / 2.0f;
 GLfloat cameraPhi = 0.0f;
 
@@ -41,17 +44,26 @@ void updateCameraPosition();
 void carrega_objetos();
 void updateMissilPosition();
 void timerFunc(int value);
-GLfloat calcularAngulo3D(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2);
+void mouseMotion(int x, int y);
+void mouseButton(int button, int state, int x, int y);
+GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx);
+
 
 Chao *chao = nullptr;
 Torre *torre = nullptr;
 Lua *lua = nullptr;
 Espaco *espaco = nullptr;
 Missil *missil = nullptr;
+<<<<<<< HEAD
 Predios *predios = nullptr;
 Iluminacao *iluminacao = nullptr;
 
 // vector<Tiro*> tiro;
+=======
+Predios *predios[6];
+
+
+>>>>>>> origin/billy
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -64,6 +76,9 @@ int main(int argc, char** argv) {
     glutDisplayFunc(desenha);
     glutReshapeFunc(reshape);
     glutKeyboardFunc(keyboard);
+    // glutMotionFunc(mouseMotion);
+    // glutMouseFunc(mouseButton);
+
 
     glEnable(GL_DEPTH_TEST);
 
@@ -71,14 +86,75 @@ int main(int argc, char** argv) {
     
     glutMainLoop();
 
-    // chao->~Chao();
-    // torre->~Torre();
-    // lua->~Lua();
-    // espaco->~Espaco();
-    // missil->~Missil();
-    // predios->~Predios();
-
     return 0;
+}
+
+void mouseMotion(int x, int y) {
+    if (cursorLocked) {
+        int deltaX = x - lastX;
+        int deltaY = y - lastY;
+
+        // Atualiza a orientação da câmera com base nos movimentos do mouse
+        cameraTheta += 0.005f * static_cast<float>(deltaY);
+        cameraPhi += 0.005f * static_cast<float>(deltaX);
+
+        // Mantém os ângulos dentro de limites razoáveis
+        if (cameraTheta < 0.1f) cameraTheta = 0.1f;
+        if (cameraTheta > M_PI - 0.1f) cameraTheta = M_PI - 0.1f;
+
+        // Atualiza a posição do cursor anterior
+        lastX = x;
+        lastY = y;
+
+        // Redesenha a cena
+        glutPostRedisplay();
+    }
+}
+
+void mouseButton(int button, int state, int x, int y) {
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+        // Trava/desatrava o cursor ao clicar no botão esquerdo do mouse
+        cursorLocked = !cursorLocked;
+
+        // Se o cursor for travado, esconde o cursor
+        if (cursorLocked) {
+            glutSetCursor(GLUT_CURSOR_NONE);
+        } else {
+            glutSetCursor(GLUT_CURSOR_INHERIT);
+        }
+    }
+
+    // Atualiza a posição do cursor anterior
+    lastX = x;
+    lastY = y;
+}
+
+void desenha_predios(){
+    //desenha predios auxiliares
+    glPushMatrix();
+        glTranslated((chao->get_raio())/3,0.0,(chao->get_raio())/3);
+        predios[0]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(-(chao->get_raio())/3,0.0,(chao->get_raio())/3);
+        predios[1]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(0.0,0.0,(chao->get_raio())/3);
+        predios[2]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(0.0,0.0,-(chao->get_raio())/3);
+        predios[3]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated((chao->get_raio())/3,0.0,-(chao->get_raio())/3);
+        predios[4]->desenha();
+    glPopMatrix();
+    glPushMatrix();
+        glTranslated(-(chao->get_raio())/3,0.0,-(chao->get_raio())/3);
+        predios[5]->desenha();
+    glPopMatrix();
 }
 
 void desenha() {
@@ -107,6 +183,7 @@ void desenha() {
         torre->desenha();
     glPopMatrix();
 
+<<<<<<< HEAD
     glPushAttrib(GL_LIGHTING_BIT);
     glPushMatrix();
         //glTranslated(0.0,-1.0,0.0);
@@ -117,6 +194,9 @@ void desenha() {
         glDisable(GL_LIGHTING);
     glPopMatrix();
     glPopAttrib();
+=======
+    desenha_predios();
+>>>>>>> origin/billy
 
     // desenha esfera
     glPushMatrix();
@@ -144,7 +224,7 @@ void updateCameraPosition() {
     y_cam = cameraRadius * cos(cameraTheta);
     z_cam = cameraRadius * sin(cameraTheta) * sin(cameraPhi);
     gluLookAt(x_cam, y_cam, z_cam, 0, torre->get_altura()*2, 0, 0, 1, 0);
-    //gluLookAt(0, (torre->get_altura()*2) + 0.3, 0, x_cam, y_cam, z_cam, 0, 1, 0);
+    //gluLookAt(0, (torre->get_altura()*2) + 0.7, 0, x_cam, y_cam, z_cam, 0, 1, 0);
 }
 
 GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx) {
@@ -161,7 +241,7 @@ GLfloat gerarNumeroAleatoriofloat(GLfloat minn, GLfloat maxx) {
 
 void updateMissilPosition(){
     if(y_missil <= 0.0){
-        y_missil = 13;
+        y_missil = 20;
         x_missil = gerarNumeroAleatoriofloat(-10,10);
         z_missil = gerarNumeroAleatoriofloat(-10,10);
     }
@@ -175,7 +255,7 @@ void reshape(int width, int height) {
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(45.0, (float)width / (float)height, 0.1, 100.0);
+    gluPerspective(60.0, (float)width / (float)height, 0.1, 100.0);
 
     glMatrixMode(GL_MODELVIEW);
 }
@@ -184,16 +264,16 @@ void keyboard(unsigned char key, int x, int y){
     // Controles da câmera usando as teclas WASD
     switch (key) {
         case 'w':
-            cameraTheta -= 0.1f;
+            cameraTheta -= 0.07f;
             break;
         case 's':
-            cameraTheta += 0.1f;
+            cameraTheta += 0.07f;
             break;
         case 'a':
-            cameraPhi -= 0.1f;
+            cameraPhi -= 0.07f;
             break;
         case 'd':
-            cameraPhi += 0.1f;
+            cameraPhi += 0.07f;
             break;
         case 'e':
             cameraRadius += 0.1f;
@@ -204,12 +284,6 @@ void keyboard(unsigned char key, int x, int y){
         case 27: // 27 é o código ASCII para a tecla "Esc"
             exit(0); // Encerra o programa
             break;
-        // case 'l':
-            // if(cont_tiros < 4){
-            //     tiro[cont_tiros]->set_disparo(true);
-            //     cont_tiros += 1;
-            // }
-            // break;
     }
     // Limitar os ângulos de câmera para evitar inversões
     if (cameraTheta < 0.1f) cameraTheta = 0.1f;
@@ -219,47 +293,26 @@ void keyboard(unsigned char key, int x, int y){
 }
 
 void timerFunc(int value) {
-    // for(int i = 0;i<4;i++){
-    //     tiro[i]->updateTiroPosition(&x_cam,&y_cam,&z_cam,cont_tiros_aux);
-    // }
     updateMissilPosition();
     glutPostRedisplay();
     glutTimerFunc(1000 / 30, timerFunc, 0);
-}
-
-GLfloat calcularAngulo3D(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2) {
-    // Calcular os vetores correspondentes aos pontos
-    GLfloat vetor1[3] = {x1, y1, z1};
-    GLfloat vetor2[3] = {x2, y2, z2};
-
-    // Calcular o produto escalar
-    GLfloat produtoEscalar = 0.0;
-    for (int i = 0; i < 3; ++i) {
-        produtoEscalar += vetor1[i] * vetor2[i];
-    }
-
-    // Calcular as magnitudes dos vetores
-    GLfloat magnitudeVetor1 = sqrt(vetor1[0]*vetor1[0] + vetor1[1]*vetor1[1] + vetor1[2]*vetor1[2]);
-    GLfloat magnitudeVetor2 = sqrt(vetor2[0]*vetor2[0] + vetor2[1]*vetor2[1] + vetor2[2]*vetor2[2]);
-
-    // Calcular o cosseno do ângulo
-    GLfloat cossenoAngulo = produtoEscalar / (magnitudeVetor1 * magnitudeVetor2);
-
-    // Calcular o ângulo em radianos usando a inversa do cosseno (arccos)
-    GLfloat anguloRad = acos(cossenoAngulo);
-
-    return anguloRad;
 }
 
 void carrega_objetos(){
     chao = new Chao(22.0, 0.2);
     torre = new Torre(0.45, 3);
     lua = new Lua(7.0f);
-    espaco = new Espaco(40.0f);
+    espaco = new Espaco(50.0f);
     missil = new Missil(0.3f,2.0f);
+<<<<<<< HEAD
     predios = new Predios(1.3, 3.5, (chao->get_raio())/3);
     iluminacao = new Iluminacao();
     // for(int i = 0;i<4;i++){
     //     tiro.push_back(new Tiro(0.05f));
     // }
+=======
+    for(int i = 0; i < 6 ;i++){
+        predios[i] = new Predios(1.3, 3.5);
+    }
+>>>>>>> origin/billy
 }

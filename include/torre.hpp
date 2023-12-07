@@ -19,11 +19,12 @@ class Torre{
 
         GLfloat altura;
         GLfloat largura;
-        Textura *textura_bandeira;
+        Textura *textura_bandeira_br;
+        Textura *textura_bandeira_jap;
         Textura *textura_torre;
         Textura *textura_torre_topo;
     protected:
-        void bandeiras();
+        void bandeiras(GLint text);
         void predio_principal();
     public:
         Torre(GLfloat largura, GLfloat altura);
