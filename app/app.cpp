@@ -4,6 +4,7 @@
 #include "../include/espaco.hpp"
 #include "../include/missil.hpp"
 #include "../include/predios.hpp"
+#include "../include/iluminacao.hpp"
 #include <GL/glut.h>
 #include <cmath>
 #include <glm/glm.hpp>
@@ -48,13 +49,15 @@ Lua *lua = nullptr;
 Espaco *espaco = nullptr;
 Missil *missil = nullptr;
 Predios *predios = nullptr;
+Iluminacao *iluminacao = nullptr;
+
 // vector<Tiro*> tiro;
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1920, 1080);
-    glutCreateWindow("so vamo");
+    glutCreateWindow("ASTAH 3D");
 
     carrega_objetos();
 
@@ -104,10 +107,16 @@ void desenha() {
         torre->desenha();
     glPopMatrix();
 
+    glPushAttrib(GL_LIGHTING_BIT);
     glPushMatrix();
         //glTranslated(0.0,-1.0,0.0);
+        glEnable(GL_LIGHTING);
+        iluminacao->ativa();
         predios->desenha();
+        iluminacao->desativa();
+        glDisable(GL_LIGHTING);
     glPopMatrix();
+    glPopAttrib();
 
     // desenha esfera
     glPushMatrix();
@@ -249,6 +258,7 @@ void carrega_objetos(){
     espaco = new Espaco(40.0f);
     missil = new Missil(0.3f,2.0f);
     predios = new Predios(1.3, 3.5, (chao->get_raio())/3);
+    iluminacao = new Iluminacao();
     // for(int i = 0;i<4;i++){
     //     tiro.push_back(new Tiro(0.05f));
     // }
