@@ -54,16 +54,10 @@ Torre *torre = nullptr;
 Lua *lua = nullptr;
 Espaco *espaco = nullptr;
 Missil *missil = nullptr;
-<<<<<<< HEAD
-Predios *predios = nullptr;
+Predios *predios[6];
 Iluminacao *iluminacao = nullptr;
 
-// vector<Tiro*> tiro;
-=======
-Predios *predios[6];
 
-
->>>>>>> origin/billy
 
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
@@ -183,20 +177,9 @@ void desenha() {
         torre->desenha();
     glPopMatrix();
 
-<<<<<<< HEAD
-    glPushAttrib(GL_LIGHTING_BIT);
-    glPushMatrix();
-        //glTranslated(0.0,-1.0,0.0);
-        glEnable(GL_LIGHTING);
-        iluminacao->ativa();
-        predios->desenha();
-        iluminacao->desativa();
-        glDisable(GL_LIGHTING);
-    glPopMatrix();
-    glPopAttrib();
-=======
+    iluminacao->ativa();
     desenha_predios();
->>>>>>> origin/billy
+    iluminacao->desativa();
 
     // desenha esfera
     glPushMatrix();
@@ -284,6 +267,24 @@ void keyboard(unsigned char key, int x, int y){
         case 27: // 27 é o código ASCII para a tecla "Esc"
             exit(0); // Encerra o programa
             break;
+        case 'i':
+            iluminacao->mover_frente();
+            break;
+        case 'k':
+            iluminacao->mover_tras();
+            break;
+        case 'j':
+            iluminacao->mover_esquerda();
+            break;
+        case 'l':
+            iluminacao->mover_direita();
+            break;
+        case 'u':
+            iluminacao->mover_cima();
+            break;
+        case 'o':
+            iluminacao->mover_baixo();
+            break;
     }
     // Limitar os ângulos de câmera para evitar inversões
     if (cameraTheta < 0.1f) cameraTheta = 0.1f;
@@ -304,15 +305,8 @@ void carrega_objetos(){
     lua = new Lua(7.0f);
     espaco = new Espaco(50.0f);
     missil = new Missil(0.3f,2.0f);
-<<<<<<< HEAD
-    predios = new Predios(1.3, 3.5, (chao->get_raio())/3);
-    iluminacao = new Iluminacao();
-    // for(int i = 0;i<4;i++){
-    //     tiro.push_back(new Tiro(0.05f));
-    // }
-=======
     for(int i = 0; i < 6 ;i++){
         predios[i] = new Predios(1.3, 3.5);
     }
->>>>>>> origin/billy
+    iluminacao = new Iluminacao();
 }

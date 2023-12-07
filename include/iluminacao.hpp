@@ -23,9 +23,9 @@ class Iluminacao{
     public:
         Iluminacao()
         {
-            this->posicao[0] = 20.0f;
-            this->posicao[1] = 20.0f;
-            this->posicao[2] = 20.0f;
+            this->posicao[0] = 0.0f;
+            this->posicao[1] = 0.0f;
+            this->posicao[2] = 0.0f;
             this->posicao[3] = 1.0f;
 
             this->ambiente[0] = 0.2f;
@@ -59,11 +59,18 @@ class Iluminacao{
 
             this->quadraticAttenuation[0] = 0.0f;
         }
-        void setPosicao(GLfloat x, GLfloat y, GLfloat z, GLfloat w);
-        void setAmbiente(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
-        void setDifusa(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
-        void setEspecular(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
-        void setBrilho(GLfloat brilho);
+        void set_posicao(GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+        void set_ambiente(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+        void set_difusa(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+        void set_especular(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+        void set_brilho(GLfloat brilho);
+
+        void mover_frente();
+        void mover_tras();
+        void mover_esquerda();
+        void mover_direita();
+        void mover_cima();
+        void mover_baixo();
 
         void ativa();
         void desativa();

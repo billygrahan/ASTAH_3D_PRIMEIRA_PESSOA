@@ -1,63 +1,9 @@
 #include "../include/predios.hpp"
 
 void Predios::desenha(){
-<<<<<<< HEAD
-
-    // desenha predios auxiliares
-    // glPushAttrib(GL_CURRENT_BIT | GL_ENABLE_BIT | GL_LIGHTING_BIT | GL_TEXTURE_BIT);
-    //     glPushMatrix();
-    //     glEnable(GL_LIGHTING);
-    //     glEnable(GL_LIGHT1);
-    //     GLfloat light_position[] = {10.0, 10.0, 10.0, 1.0};
-    //     GLfloat light_ambient[] = {0.0, 0.0, 0.0, 1.0};
-    //     GLfloat light_diffuse[] = {1.5f, 1.5f, 1.5f, 1.0f}; 
-    //     GLfloat light_specular[] = {2.0f, 2.0f, 2.0f, 1.0f};
-    //     GLfloat att_constant = 0.2;
-    //     GLfloat att_linear = 0.0;
-    //     GLfloat att_quadratic = 0.0;
-    //     GLfloat spot_direction[] = {0.0, 0.0, 0.0};
-    //     GLfloat spot_exponent = 0.0;
-    //     GLfloat spot_cutoff = 180.0;
-
-    //     glLightfv(GL_LIGHT1, GL_POSITION, light_position);
-    //     glLightfv(GL_LIGHT1, GL_AMBIENT, light_ambient);
-    //     glLightfv(GL_LIGHT1, GL_DIFFUSE, light_diffuse);
-    //     glLightfv(GL_LIGHT1, GL_SPECULAR, light_specular);
-    //     glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, att_constant);
-    //     glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, att_linear);
-    //     glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, att_quadratic);
-    //     glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, spot_direction);
-    //     glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, spot_exponent);
-    //     glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, spot_cutoff);
-=======
->>>>>>> origin/billy
     glPushMatrix();
         predio_principal();
     glPopMatrix();
-<<<<<<< HEAD
-    glPushMatrix();
-        glTranslated(-pos,0.0,pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(0.0,0.0,pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(0.0,0.0,-pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(pos,0.0,-pos);
-        predio_principal();
-    glPopMatrix();
-    glPushMatrix();
-        glTranslated(-pos,0.0,-pos);
-        predio_principal();
-    glPopMatrix();
-    // glPopAttrib();
-=======
->>>>>>> origin/billy
 }
 
 void Predios::predio_principal(){
@@ -68,6 +14,7 @@ void Predios::predio_principal(){
     glBegin(GL_QUADS);
         
         // lado z+ 
+        calcula_normal(largura, 0.0, largura, -largura, 0.0, largura, -largura, altura, largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, largura);
         glTexCoord2f(1.0, 0.0);
@@ -78,6 +25,7 @@ void Predios::predio_principal(){
         glVertex3f(largura, altura, largura);
 
         // lado x+ 
+        calcula_normal(largura, 0.0, largura, largura, 0.0, -largura, largura, altura, -largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, largura);
         glTexCoord2f(1.0, 0.0);
@@ -88,6 +36,7 @@ void Predios::predio_principal(){
         glVertex3f(largura, altura, largura);
 
         // lado z- 
+        calcula_normal(largura, 0.0, -largura, -largura, 0.0, -largura, -largura, altura, -largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, -largura);
         glTexCoord2f(1.0, 0.0);
@@ -98,6 +47,7 @@ void Predios::predio_principal(){
         glVertex3f(largura, altura, -largura);
 
         // lado x- 
+        calcula_normal(-largura, 0.0, largura, -largura, 0.0, -largura, -largura, altura, -largura);
         glTexCoord2f(0.0, 0.0);
         glVertex3f(-largura, 0.0, -largura);
         glTexCoord2f(1.0, 0.0);
@@ -117,6 +67,7 @@ void Predios::predio_principal(){
 
     glBegin(GL_QUADS);
         //tampa
+        calcula_normal(largura, altura, largura, -largura, altura, largura, -largura, altura, -largura);
         glTexCoord2f(0.0*4.0, 0.0*4.0);
         glVertex3f(largura, altura, largura);
         glTexCoord2f(1.0*4.0, 0.0*4.0);
@@ -146,6 +97,32 @@ Predios::Predios(GLfloat largura, GLfloat altura){
 
 GLfloat Predios::get_altura(){
     return altura;
+}
+
+void Predios::calcula_normal(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+    float v1x, v1y, v1z, v2x, v2y, v2z, nx, ny, nz;
+
+    // Calculate vectors
+    v1x = x2 - x1;
+    v1y = y2 - y1;
+    v1z = z2 - z1;
+
+    v2x = x3 - x1;
+    v2y = y3 - y1;
+    v2z = z3 - z1;
+
+    // Calculate cross product
+    nx = v1y * v2z - v1z * v2y;
+    ny = v1z * v2x - v1x * v2z;
+    nz = v1x * v2y - v1y * v2x;
+
+    // Normalize the normal vector
+    float length = sqrt(nx * nx + ny * ny + nz * nz);
+    nx /= length;
+    ny /= length;
+    nz /= length;
+
+    glNormal3f(nx, ny, nz);
 }
 
 // In Predios.cpp file
