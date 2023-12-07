@@ -100,24 +100,17 @@ GLfloat Predios::get_altura(){
 }
 
 void Predios::calcula_normal(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
-    float v1x, v1y, v1z, v2x, v2y, v2z, nx, ny, nz;
+    float nx, ny, nz;
 
-    // Calculate vectors
-    v1x = x2 - x1;
-    v1y = y2 - y1;
-    v1z = z2 - z1;
+    // Calculate the normal vector
+    nx = (y2-y1)*(z3-z1) - (z2-z1)*(y3-y1);
+    ny = (z2-z1)*(x3-x1) - (x2-x1)*(z3-z1);
+    nz = (x2-x1)*(y3-y1) - (y2-y1)*(x3-x1);
 
-    v2x = x3 - x1;
-    v2y = y3 - y1;
-    v2z = z3 - z1;
-
-    // Calculate cross product
-    nx = v1y * v2z - v1z * v2y;
-    ny = v1z * v2x - v1x * v2z;
-    nz = v1x * v2y - v1y * v2x;
+    // Calculate the length of the normal vector
+    float length = sqrt(nx * nx + ny * ny + nz * nz);
 
     // Normalize the normal vector
-    float length = sqrt(nx * nx + ny * ny + nz * nz);
     nx /= length;
     ny /= length;
     nz /= length;

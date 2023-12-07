@@ -174,7 +174,9 @@ void desenha() {
 
     glPushMatrix();
         //glTranslated(0.0,-1.0,0.0);
+        iluminacao->ativa();
         torre->desenha();
+        iluminacao->desativa();
     glPopMatrix();
 
     iluminacao->ativa();

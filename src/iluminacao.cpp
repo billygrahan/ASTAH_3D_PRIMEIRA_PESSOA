@@ -41,11 +41,11 @@ void Iluminacao::mover_tras(){
 }
 
 void Iluminacao::mover_direita(){
-    posicao[0] += 0.1;
+    posicao[0] -= 0.1;
 }
 
 void Iluminacao::mover_esquerda(){
-    posicao[0] -= 0.1;
+    posicao[0] += 0.1;
 }
 
 void Iluminacao::mover_cima(){
