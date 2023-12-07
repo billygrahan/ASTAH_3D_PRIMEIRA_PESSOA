@@ -41,6 +41,7 @@ void timerFunc(int value);
 void mouseMotion(int x, int y);
 void mouseButton(int button, int state, int x, int y);
 void desenha_predios();
+void desenha_misseis();
 void colisao_predios();
 
 
@@ -76,6 +77,52 @@ int main(int argc, char** argv) {
     glutMainLoop();
 
     return 0;
+}
+
+void desenha() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    updateCameraPosition();
+
+    glPushMatrix();
+        //glTranslated(5.0,torre.get_altura()+3,5.0);
+        //glColor3f(0.0, 1.0, 1.0);
+        glRotatef(180,1,0,0);
+        espaco->desenha();
+        //glutSolidSphere(1.0, 50, 50);
+    glPopMatrix();
+
+    glPushMatrix();
+        //glTranslated(0.0,-1.0,0.0);
+        chao->desenha();
+    glPopMatrix();
+
+    glPushMatrix();
+        //glTranslated(0.0,-1.0,0.0);
+        iluminacao->ativa();
+        torre->desenha();
+        iluminacao->desativa();
+    glPopMatrix();
+
+    //iluminacao->ativa();
+    desenha_predios();
+    //iluminacao->desativa();
+
+    // desenha esfera
+    glPushMatrix();
+        glTranslated(20.0,20,20.0);
+        //glColor3f(0.0, 1.0, 1.0);
+        glRotatef(180,1,0,0);
+        lua->desenha();
+        //glutSolidSphere(1.0, 50, 50);
+    glPopMatrix();
+
+    desenha_misseis();
+
+    glutSwapBuffers();
 }
 
 void mouseMotion(int x, int y) {
@@ -184,51 +231,6 @@ void desenha_misseis(){
     }
 }
 
-void desenha() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    updateCameraPosition();
-
-    glPushMatrix();
-        //glTranslated(5.0,torre.get_altura()+3,5.0);
-        //glColor3f(0.0, 1.0, 1.0);
-        glRotatef(180,1,0,0);
-        espaco->desenha();
-        //glutSolidSphere(1.0, 50, 50);
-    glPopMatrix();
-
-    glPushMatrix();
-        //glTranslated(0.0,-1.0,0.0);
-        chao->desenha();
-    glPopMatrix();
-
-    glPushMatrix();
-        //glTranslated(0.0,-1.0,0.0);
-        iluminacao->ativa();
-        torre->desenha();
-        iluminacao->desativa();
-    glPopMatrix();
-
-    //iluminacao->ativa();
-    desenha_predios();
-    //iluminacao->desativa();
-
-    // desenha esfera
-    glPushMatrix();
-        glTranslated(20.0,20,20.0);
-        //glColor3f(0.0, 1.0, 1.0);
-        glRotatef(180,1,0,0);
-        lua->desenha();
-        //glutSolidSphere(1.0, 50, 50);
-    glPopMatrix();
-
-    desenha_misseis();
-
-    glutSwapBuffers();
-}
 
 void updateCameraPosition() {
     x_cam = cameraRadius * sin(cameraTheta) * cos(cameraPhi);
