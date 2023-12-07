@@ -1,148 +1,147 @@
 #include "../include/torre.hpp"
-#include "../include/textura.hpp" 
-#include <GL/glut.h>
-#include <cmath>
-#include <string>
-
-void predio_principal(double largura, double altura);
-void bandeiras(double largura, double altura, const string& caminho);
 
 void Torre::desenha(){
+    glColor3f(1.0, 1.0, 1.0);
     //desenha predio principal
-    predio_principal(largura, altura);
+    glPushMatrix();
+        glTranslated(0.0,altura,0.0);
+        predio_principal();
+    glPopMatrix();
 
     // desenha predios auxiliares
     glPushMatrix();
         glTranslated(largura,0.0,largura);
-        predio_principal(largura/2, altura/2);
+        predio_principal();
     glPopMatrix();
     glPushMatrix();
         glTranslated(-largura,0.0,largura);
-        predio_principal(largura/2, altura/2);
+        predio_principal();
     glPopMatrix();
     glPushMatrix();
         glTranslated(largura,0.0,-largura);
-        predio_principal(largura/2, altura/2);
+        predio_principal();
     glPopMatrix();
     glPushMatrix();
         glTranslated(-largura,0.0,-largura);
-        predio_principal(largura/2, altura/2);
+        predio_principal();
     glPopMatrix();
 
     // desenha as bandeiras
     glPushMatrix();
-        glTranslated(largura, altura, largura);
-        bandeiras(largura, altura, "../texturas/astah.png");
+        glTranslated(largura - 0.01, altura*2 - 0.25, largura - 0.01);
+        //glRotatef(45,1,-1,-1);
+        bandeiras(textura_bandeira_br->get_textureID());
+    glPopMatrix();
+
+    glPushMatrix();
+        glTranslated(-(largura - 0.01), altura*2 - 0.25, -(largura - 0.01));
+        glRotatef(180,0,1,0);
+        //glRotatef(45,1,-1,-1);
+        bandeiras(textura_bandeira_jap->get_textureID());
     glPopMatrix();
 
 }
 
-void predio_principal(double largura, double altura){
-    glBegin(GL_TRIANGLE_STRIP);
+void Torre::predio_principal(){
+    // glEnable(GL_LIGHTING);
+    // glEnable(GL_LIGHT0);
 
-        // lado z+
-        glColor3f(1.0, 0.0, 1.0); 
-        glVertex3f(largura, 0.0, largura);
-        glVertex3f(-largura, 0.0, largura);
+    // // Configuração da luz
+    // glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+    // glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
+    // glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
+    // glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 
-        glColor3f(0.0, 0.0, 0.0); 
-        glVertex3f(largura, altura, largura);
-        glVertex3f(-largura, altura, largura);
+    // // Configuração do material
+    // glMaterialfv(GL_FRONT, GL_AMBIENT, materialAmbiente);
+    // glMaterialfv(GL_FRONT, GL_DIFFUSE, materialDifuso);
+    // glMaterialfv(GL_FRONT, GL_SPECULAR, materialEspecular);
+    // glMaterialf(GL_FRONT, GL_SHININESS, brilhoMaterial);
 
-        // lado x+
-        glColor3f(1.0, 0.0, 1.0); 
-        glVertex3f(largura, 0.0, largura);
-        glVertex3f(largura, 0.0, -largura);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textura_torre->get_textureID());
 
-        glColor3f(0.0, 0.0, 0.0); 
-        glVertex3f(largura, altura, largura);
-        glVertex3f(largura, altura, -largura);
-
-        // lado z-
-        glColor3f(1.0, 0.0, 1.0); 
-        glVertex3f(largura, 0.0, -largura);
-        glVertex3f(-largura, 0.0, -largura);
-
-        glColor3f(0.0, 0.0, 0.0); 
-        glVertex3f(largura, altura, -largura);
-        glVertex3f(-largura, altura, -largura);
-
-        // lado x-
-        glColor3f(1.0, 0.0, 1.0); 
-        glVertex3f(-largura, 0.0, -largura);
-        glVertex3f(-largura, 0.0, largura);
-
-        glColor3f(0.0, 0.0, 0.0); 
-        glVertex3f(-largura, altura, -largura);
-        glVertex3f(-largura, altura, largura);
-
-        //tampa
-        glColor3f(0.0, 0.0, 0.0); 
-        glVertex3f(largura, altura, largura);
-        glVertex3f(-largura, altura, largura);
-        glVertex3f(largura, altura, -largura);
-        glVertex3f(-largura, altura, -largura);
-
-
-    glEnd();
-
-    glBegin(GL_LINES);
-
-        glColor3f(1.0, 1.0, 1.0);
-
-        //alturas
-        glVertex3f(largura, 0.0, largura);
-        glVertex3f(largura, altura, largura);
+    glBegin(GL_QUADS);
         
-        glVertex3f(-largura, 0.0, largura);
-        glVertex3f(-largura, altura, largura);
-
-        glVertex3f(-largura, 0.0, -largura);
-        glVertex3f(-largura, altura, -largura);
-
-        glVertex3f(largura, 0.0, -largura);
-        glVertex3f(largura, altura, -largura);
-
-        //larguras
-            //bases
+        // lado z+ 
+        calcula_normal(largura, 0.0, largura, -largura, 0.0, largura, -largura, altura, largura);
+        glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, largura);
+        glTexCoord2f(1.0, 0.0);
         glVertex3f(-largura, 0.0, largura);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3f(-largura, altura, largura);
+        glTexCoord2f(0.0, 1.0);
+        glVertex3f(largura, altura, largura);
 
-        glVertex3f(-largura, 0.0, largura);
-        glVertex3f(-largura, 0.0, -largura);
-
-        glVertex3f(-largura, 0.0, -largura);
-        glVertex3f(largura, 0.0, -largura);
-
-        glVertex3f(largura, 0.0, -largura);
+        // lado x+ 
+        calcula_normal(largura, 0.0, largura, largura, 0.0, -largura, largura, altura, -largura);
+        glTexCoord2f(0.0, 0.0);
         glVertex3f(largura, 0.0, largura);
-
-            //topos
+        glTexCoord2f(1.0, 0.0);
+        glVertex3f(largura, 0.0, -largura);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3f(largura, altura, -largura);
+        glTexCoord2f(0.0, 1.0);
         glVertex3f(largura, altura, largura);
-        glVertex3f(-largura, altura, largura);
 
-        glVertex3f(-largura, altura, largura);
+        // lado z- 
+        calcula_normal(largura, 0.0, -largura, -largura, 0.0, -largura, -largura, altura, -largura);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3f(largura, 0.0, -largura);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3f(-largura, 0.0, -largura);
+        glTexCoord2f(1.0, 1.0);
         glVertex3f(-largura, altura, -largura);
-
-        glVertex3f(-largura, altura, -largura);
+        glTexCoord2f(0.0, 1.0);
         glVertex3f(largura, altura, -largura);
 
-        glVertex3f(largura, altura, -largura);
-        glVertex3f(largura, altura, largura);
+        // lado x- 
+        calcula_normal(-largura, 0.0, largura, -largura, 0.0, -largura, -largura, altura, -largura);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3f(-largura, 0.0, -largura);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3f(-largura, 0.0, largura);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3f(-largura, altura, largura);
+        glTexCoord2f(0.0, 1.0);
+        glVertex3f(-largura, altura, -largura);
+
+
     glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, textura_torre_topo->get_textureID());
+
+    glBegin(GL_QUADS);
+        //tampa
+        calcula_normal(largura, altura, largura, -largura, altura, largura, -largura, altura, -largura);
+        glTexCoord2f(0.0, 0.0);
+        glVertex3f(largura, altura, largura);
+        glTexCoord2f(1.0, 0.0);
+        glVertex3f(-largura, altura, largura);
+        glTexCoord2f(1.0, 1.0);
+        glVertex3f(-largura, altura, -largura);
+        glTexCoord2f(0.0, 1.0);
+        glVertex3f(largura, altura, -largura);
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+
+    // glDisable(GL_LIGHTING);
+    // glDisable(GL_LIGHT0);
 }
 
 
 
-void bandeiras(double Largura, double altura, const string& caminho){
+void Torre::bandeiras(GLint text){
+    glLineWidth(3.0f);
+    glColor3f(1.0, 1.0, 1.0); 
     glBegin(GL_LINES);
         glVertex3f(0.0,0.0,0.0);
-        glVertex3f(0.0,Largura,0.0);
+        glVertex3f(0.0,largura,0.0);
     glEnd();
-
-    Textura bandeira(caminho.c_str());
-
-    GLfloat largura = static_cast<GLfloat>(Largura);
 
     GLfloat vertices[]{
     0.0,0.0,0.0,
@@ -159,7 +158,7 @@ void bandeiras(double Largura, double altura, const string& caminho){
     };
         // Ativar o mapeamento de textura
     glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, bandeira.get_textureID());
+    glBindTexture(GL_TEXTURE_2D, text);
 
     glPushMatrix();
     glTranslated(0.0,(2*largura)/3,0.0);
@@ -170,16 +169,47 @@ void bandeiras(double Largura, double altura, const string& caminho){
             glVertex3fv(vertices + i * 3);
         }
     glEnd();
+    glDisable(GL_TEXTURE_2D);
     glPopMatrix();
-
-    bandeira.~Textura();
 }
 
-Torre::Torre(double largura, double altura){
+Torre::Torre(GLfloat largura, GLfloat altura){
     this->largura = largura;
     this->altura = altura;
+    textura_bandeira_br = new Textura("bandeirabr.png");
+    textura_bandeira_jap = new Textura("bandeirajap.png");
+    textura_torre = new Textura("predio.png");
+    textura_torre_topo = new Textura("prediotopo.png");
 }
 
-double Torre::get_altura(){
+GLfloat Torre::get_altura(){
     return altura;
+}
+
+// In torre.cpp file
+
+void Torre::calcula_normal(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+    float nx, ny, nz;
+
+    // Calculate the normal vector
+    nx = (y2-y1)*(z3-z1) - (z2-z1)*(y3-y1);
+    ny = (z2-z1)*(x3-x1) - (x2-x1)*(z3-z1);
+    nz = (x2-x1)*(y3-y1) - (y2-y1)*(x3-x1);
+
+    // Calculate the length of the normal vector
+    float length = sqrt(nx * nx + ny * ny + nz * nz);
+
+    // Normalize the normal vector
+    nx /= length;
+    ny /= length;
+    nz /= length;
+
+    glNormal3f(nx, ny, nz);
+}
+
+Torre::~Torre() {
+    delete textura_bandeira_br;
+    delete textura_torre;
+    delete textura_torre_topo;
+    delete textura_bandeira_jap;
 }

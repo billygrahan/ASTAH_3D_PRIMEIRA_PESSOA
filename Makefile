@@ -14,8 +14,13 @@ all: \
 libeb: \
     $(OBJ)/chao.o \
 	$(OBJ)/torre.o \
+	$(OBJ)/lua.o \
 	$(OBJ)/textura.o \
-	$(OBJ)/lua.o
+	$(OBJ)/espaco.o \
+	$(OBJ)/missil.o \
+	$(OBJ)/predios.o\
+	$(OBJ)/iluminacao.o
+
 
 myapps: \
 	cleanapp \

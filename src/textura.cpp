@@ -1,14 +1,18 @@
 #include "../include/textura.hpp" 
-#include <GL/glut.h>
-#include <cmath>
-#include <SOIL/SOIL.h>
-#include <cstdio>
 
 
-Textura::Textura(const string& caminho){
+Textura::Textura(const char* caminho){
+    const char* diretorio = "../texturas/";
+
+    size_t tam_textura = strlen(diretorio) + strlen(caminho);
+
+    char* textura = new char[tam_textura];
+    strcpy(textura, diretorio);
+    strcat(textura, caminho);
+
     // Carregar a textura
     textureID = SOIL_load_OGL_texture(
-        caminho.c_str(),  // Substitua com o caminho para sua textura
+        textura,  // Substitua com o caminho para sua textura
         SOIL_LOAD_AUTO,
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y
@@ -18,6 +22,8 @@ Textura::Textura(const string& caminho){
     const char* error = SOIL_last_result();
     printf("Erro ao carregar textura: %s\n", error);
     }
+
+    delete[] textura;
 }
 
 Textura::~Textura(){

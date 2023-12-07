@@ -6,6 +6,9 @@
 #include <SOIL/SOIL.h>
 #include <string>
 #include <cstdio>
+#include <cstring>
+#include <iostream>
+
 
 using namespace std;
 
@@ -13,7 +16,7 @@ class Textura{
     private:
         GLuint textureID;
     public:
-        Textura(const string& caminho);
+        Textura(const char* caminho);
         ~Textura();
         GLuint get_textureID();
 };
