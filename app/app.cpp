@@ -107,9 +107,9 @@ void desenha() {
         iluminacao->desativa();
     glPopMatrix();
 
-    //iluminacao->ativa();
+    iluminacao->ativa();
     desenha_predios();
-    //iluminacao->desativa();
+    iluminacao->desativa();
 
     // desenha esfera
     glPushMatrix();
@@ -319,7 +319,7 @@ void carrega_objetos(){
     lua = new Lua(7.0f);
     espaco = new Espaco(50.0f);
     for(int i = 0; i < 3 ;i++){
-        missil[i] = new Missil(0.3f,2.0f,0.5f);
+        missil[i] = new Missil(0.3f,2.0f,0.07f);
     }
     for(int i = 0; i < 6 ;i++){
         predios[i] = new Predios(1.3, 3.5);
