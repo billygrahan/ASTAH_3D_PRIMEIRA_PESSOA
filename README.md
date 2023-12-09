@@ -13,7 +13,7 @@ Este projeto é um exemplo de jogo inspirado no clássico Missile Command, desen
 ## Funcionalidades Principais
 
 ### 1. Defesa da Cidade
-Neste jogo, os jogadores devem defender sua cidade dos asteroides. Use o teclado para mirar e clique para disparar contra a invasao dos asteroides antes que ele destrua o que restou da terra. Ganhe pontos ao destruir os asteroides antes que eles atinjam sua cidade.
+Neste jogo, os jogadores devem defender sua cidade dos asteroides. Use o teclado para mirar e clique para disparar contra essa invasâo antes que eles destruam o que restou da terra. Ganhe pontos ao destruir os asteroides antes que eles atinjam as estruturas da sua cidade.
 
 ### 2. Gráficos com OpenGL
 O jogo utiliza a biblioteca OpenGL para renderizar os gráficos, proporcionando uma experiência visual envolvente.
@@ -43,7 +43,7 @@ O jogo utiliza a biblioteca OpenGL para renderizar os gráficos, proporcionando 
 > ## Controles 
 > - Use o teclado para mirar e clique o botão direito para disparar.
 > - Pressione `F` no teclado para colocar o jogo em FullScreen.
-> - Pressione `A, W, S, D, Q, E` no teclado para controlar a camera do jogo.
+> - Pressione `A, W, S, D, Q, E` no teclado para controlar a câmera do jogo.
 > - Pressione `I, K, J, L, U, O` no teclado para controlar a iluminação do jogo.
 > - Pressione `Esc` no teclado para encerrar o jogo.
 
